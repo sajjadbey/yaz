@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Django
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+db.sqlite3
+/static/
+media/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+*.swp
+*.swo
+
+# Certificates
+*.pem
+*.key
