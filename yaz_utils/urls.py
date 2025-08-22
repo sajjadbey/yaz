@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import latin_to_oldturkic
+from .views import convert_view
 
 urlpatterns = [
-    path("convert/", latin_to_oldturkic, name="convert_to_old_turkic"),
+    path("convert/", convert_view, name="convert"),
 ]

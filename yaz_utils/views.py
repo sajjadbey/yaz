@@ -1,20 +1,26 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .utils import OldTurkicConverter
+from django.http import JsonResponse
+from .utils import OldTurkicConverter  # your converter function
 
-@api_view(['GET'])
-def latin_to_oldturkic(request):
-    """
-    Convert Azerbaijani Latin text to Old Turkic runes.
-    Usage: /api/dict/convert?text=salam
-    """
-    text = request.GET.get("text", "")
-    if not text:
-        return Response({"error": "No text provided"}, status=400)
+# List of common bot user agents
+BOT_USER_AGENTS = [
+    "telegram", "instagram", "facebook", "twitter", "whatsapp", "linkedin", "discord"
+]
 
-    converted = OldTurkicConverter.convert(text)
-    return Response({
-        "latin": text,
-        "old_turkic": converted
-    })
+def convert_view(request):
+    text = request.GET.get("text", "").strip()
+    converted = OldTurkicConverter().convert(text) if text else ""
+
+    user_agent = request.META.get("HTTP_USER_AGENT", "").lower()
+    is_bot = any(bot in user_agent for bot in BOT_USER_AGENTS)
+
+    if is_bot:
+        # Serve HTML with Open Graph meta
+        return render(request, "convert_preview.html", {
+            "text": text,
+            "converted": converted,
+            "url": request.build_absolute_uri(),
+        })
+    else:
+        # Serve normal JSON
+        return JsonResponse({"text": text, "converted": converted})
