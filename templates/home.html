@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +11,7 @@
   <!-- Open Graph Meta -->
   <meta property="og:title" content="Qizilbash – Azerbaijani Dictionary & Culture" />
   <meta property="og:description" content="🚧 Our website is under construction. Soon you'll find an Azerbaijani dictionary, Old Turkic transliterator, and poetry archive here." />
-  <meta property="og:image" content="https://qizilbash.ir/static/og-preview.jpg" />
+  <meta property="og:image" content="{% static 'images/og-preview.jpg' %}" />
   <meta property="og:url" content="https://qizilbash.ir/" />
   <meta property="og:type" content="website" />
 
@@ -16,7 +19,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Qizilbash – Azerbaijani Dictionary & Culture">
   <meta name="twitter:description" content="🚧 Our website is under construction. Soon you'll find an Azerbaijani dictionary, Old Turkic transliterator, and poetry archive here.">
-  <meta name="twitter:image" content="https://qizilbash.ir/static/og-preview.jpg">
+  <meta name="twitter:image" content="{% static 'images/og-preview.jpg' %}">
 
   <style>
     body {
