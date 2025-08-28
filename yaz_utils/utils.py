@@ -33,7 +33,8 @@ class OldTurkicConverter:
         'v': '𐰋',
         'x': '𐰐',
         'y': '𐰖',
-        'z': '𐰔'
+        'z': '𐰔',
+        ' ': '⁚'
     }
 
     @classmethod
