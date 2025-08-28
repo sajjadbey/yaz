@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Turkic Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0b3d91; /* Turkic blue */
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      color: #ffcc00; /* gold */
+    }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 120px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      resize: none;
+    }
+    #inputBox {
+      background: #1e4ba5;
+      color: #fff;
+    }
+    #outputBox {
+      background: #14377a;
+      color: #ffcc00;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      direction: rtl;
+    }
+  </style>
+</head>
+<body>
+  <h1>Old Turkic Converter</h1>
+
+  <textarea id="inputBox" placeholder="Type Azerbaijani text here..."></textarea>
+  <textarea id="outputBox" readonly placeholder="Converted text will appear here..."></textarea>
+
+  <script>
+    const inputBox = document.getElementById("inputBox");
+    const outputBox = document.getElementById("outputBox");
+
+    let timer = null;
+    inputBox.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const text = encodeURIComponent(inputBox.value);
+        if (!text) {
+          outputBox.value = "";
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/utils/convert/?text=${text}`);
+          const data = await res.json();
+          outputBox.value = data.converted || "Error";
+        } catch (err) {
+          outputBox.value = "⚠️ API error";
+        }
+      }, 300); // debounce
+    });
+  </script>
+</body>
+</html>
