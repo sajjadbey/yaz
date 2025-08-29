@@ -1,6 +1,9 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import Word
 from django.db.models import Q
+from .serializers import WordSerializer
 
 def all_words(request):
     words = Word.objects.all()
@@ -49,4 +52,15 @@ def search_en(request, translation):
         for w in words
     ]
     return JsonResponse(data, safe=False)
+
+@api_view(["GET"])
+def search_words(request):
+    query = request.GET.get("q", "")
+    if query:
+        words = Word.objects.filter(latin__icontains=query)[:20]  # limit results
+    else:
+        words = Word.objects.none()
+
+    serializer = WordSerializer(words, many=True)
+    return Response(serializer.data)
 
