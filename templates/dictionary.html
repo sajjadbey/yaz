@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b3d91; /* deep blue */
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            color: #ffd700; /* golden */
+        }
+        input {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            width: 60%;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .results {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .word {
+            background: #145da0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .rtl {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔎 Azerbaijani Dictionary</h1>
+    <input type="text" id="search" placeholder="Start typing...">
+
+    <div class="results" id="results"></div>
+
+    <script>
+        const input = document.getElementById("search");
+        const resultsDiv = document.getElementById("results");
+
+        input.addEventListener("input", async () => {
+            const query = input.value.trim();
+            if (!query) {
+                resultsDiv.innerHTML = "";
+                return;
+            }
+
+            const res = await fetch(`/api/dict/search?q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+
+            resultsDiv.innerHTML = data.length
+                ? data.map(word => `
+                    <div class="word">
+                        <b>${word.latin} | ${word.arabic_script}</b> <br>
+                        <i class="rtl">${word.description}</i> <br>
+                        <i>Synonyms:</i> ${word.synonyms || "—"} <br>
+                        <i>Persian:</i> ${word.translation_fa || "—"} <br>
+                        <i>English:</i> ${word.translation_en || "—"}
+                    </div>
+                  `).join("")
+                : "<p>No results found</p>";
+        });
+    </script>
+</body>
+</html>
